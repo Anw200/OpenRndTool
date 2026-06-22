@@ -3,7 +3,7 @@ OpenRndTool is a deterministic random‑stream generator that produces reproduci
 The generator uses SHA‑512 as its core primitive and binds every output block to the secret, ensuring that no part of the stream can be reproduced or extended without knowing the secret.
 
 How the Generator Works
-1. Initial Seed Derived From the Secret
+1. Initial Seed Derived From the Secret.
 The process begins by hashing the user’s secret:
 
 Code
