@@ -1,54 +1,99 @@
-# OpenRndTool  
-Deterministic SHA‑512–based random file generator with mixed‑seed logic, preview block output, and SHA‑256 verification.
+OpenRndTool — Deterministic Secret‑Bound Random Stream Generator
+OpenRndTool is a deterministic random‑stream generator that produces reproducible, cryptographically strong byte streams based on a user‑supplied secret.
+The generator uses SHA‑512 as its core primitive and binds every output block to the secret, ensuring that no part of the stream can be reproduced or extended without knowing the secret.
 
-## Overview
-OpenRndTool is a lightweight Windows utility that generates **deterministic random files** using a custom SHA‑512–driven PRNG pipeline.  
-Given the same input secret, the tool will always produce the **exact same output file**, making it ideal for:
+How the Generator Works
+1. Initial Seed Derived From the Secret
+The process begins by hashing the user’s secret:
 
-- reproducible randomness  
-- shared‑secret workflows  
-- deterministic key‑expansion  
-- offline cryptographic experiments  
-- generating large entropy pools for downstream tools  
+Code
+state₀ = SHA512(secret)
+This 64‑byte hash becomes the initial state for the generator.
+It ensures that:
 
-This project is intentionally simple, transparent, and free to use.
+the same secret always produces the same stream
 
----
+different secrets produce completely unrelated streams
 
-## Features
+no information about the secret is leaked
 
-### 🔐 Deterministic PRNG
-- Uses SHA‑512 as the core mixing and expansion function  
-- Combines user input with internal seed‑mixing logic  
-- Produces identical output for identical inputs  
+2. Each Following Block Depends on BOTH the Previous Block and the Secret
+After the initial block, every subsequent block is computed as:
 
-### 📄 Random File Generation
-- Generates files of user‑selected size (in kilobytes)  
-- Writes output as hex‑encoded random data  
-- Includes a preview block showing the first 256 bytes  
+Code
+stateₙ₊₁ = SHA512(stateₙ || secret)
+Where:
 
-### 🧪 SHA‑256 File Hashing
-- Automatically computes the SHA‑256 fingerprint of the generated file  
-- Allows easy verification and reproducibility  
+stateₙ is the previous 64‑byte block
 
-### 🔁 Seed Mixing
-- User secret is mixed with internal state  
-- Ensures high entropy and deterministic evolution  
+secret is the original user‑supplied secret
 
----
+|| means concatenation
 
-## How It Works
-1. User enters a secret phrase.  
-2. The tool mixes the secret using SHA‑512.  
-3. A deterministic PRNG loop expands the seed into a large byte stream.  
-4. The output is written to a file with a timestamp‑based name.  
-5. A preview block is shown in the UI.  
-6. The final file’s SHA‑256 hash is computed and displayed.
+This creates a keyed hash chain, meaning:
 
-Because the process is deterministic, anyone with the same secret and the same tool can regenerate the exact same file.
+Every block depends on the secret
 
----
+Every block depends on all previous blocks
 
-## Use Cases
-- Creating reproducible entropy for other cryptographic tools  
-- Deriving long secrets
+No attacker can continue the stream without the secret
+
+No attacker can reverse the stream to recover earlier blocks
+
+This is fundamentally different from a normal SHA‑512 chain, where knowing any block allows you to compute all future blocks.
+Here, the secret is required at every step.
+
+Why This Design Is Secure
+✔ Secret‑Bound at Every Step
+Even if someone obtains a 64‑byte block from the output, they cannot compute the next block without the secret.
+
+✔ Deterministic
+Same secret → same output stream.
+Different secret → completely different stream.
+
+✔ Cryptographically Strong
+SHA‑512 provides:
+
+512‑bit output
+
+strong avalanche behavior
+
+resistance to collisions and preimage attacks
+
+✔ No Reseeding Weaknesses
+The secret is mixed into every block, not just the first one.
+
+Output Format
+The generator writes the output stream to a text file as:
+
+uppercase hexadecimal
+
+fixed number of bytes per row (user‑configurable)
+
+optional line breaks (0 = continuous stream)
+
+Example:
+
+Code
+A3F1C0... (256 bytes per row)
+Standard Random Mode
+The tool also includes a standard .NET Random mode, seeded using:
+
+Code
+seed = first 32 bits of SHA512(secret)
+This mode is not cryptographically secure, but useful for testing and comparison.
+
+Use Cases
+deterministic random file generation
+
+reproducible test data
+
+secret‑based key material expansion
+
+offline random stream generation
+
+cryptographic research and experimentation
+
+License
+Free for personal and research use.
+No warranty. Use at your own risk.
