@@ -15,32 +15,30 @@
 
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             txtInput = new TextBox();
-            txtSha512 = new TextBox();
             txtOutput = new TextBox();
             btnStdRandom = new Button();
             btnSha512Random = new Button();
+            Reset = new Button();
+            label1 = new Label();
+            label2 = new Label();
+            picLogo = new PictureBox();
+            ((System.ComponentModel.ISupportInitialize)picLogo).BeginInit();
             SuspendLayout();
             // 
             // txtInput
             // 
-            txtInput.Location = new Point(12, 12);
+            txtInput.Location = new Point(12, 29);
             txtInput.Multiline = true;
             txtInput.Name = "txtInput";
-            txtInput.Size = new Size(560, 60);
+            txtInput.ScrollBars = ScrollBars.Vertical;
+            txtInput.Size = new Size(560, 126);
             txtInput.TabIndex = 0;
-            // 
-            // txtSha512
-            // 
-            txtSha512.Location = new Point(12, 78);
-            txtSha512.Multiline = true;
-            txtSha512.Name = "txtSha512";
-            txtSha512.Size = new Size(560, 60);
-            txtSha512.TabIndex = 1;
             // 
             // txtOutput
             // 
-            txtOutput.Location = new Point(12, 144);
+            txtOutput.Location = new Point(12, 192);
             txtOutput.Multiline = true;
             txtOutput.Name = "txtOutput";
             txtOutput.ScrollBars = ScrollBars.Vertical;
@@ -49,7 +47,7 @@
             // 
             // btnStdRandom
             // 
-            btnStdRandom.Location = new Point(12, 410);
+            btnStdRandom.Location = new Point(12, 458);
             btnStdRandom.Name = "btnStdRandom";
             btnStdRandom.Size = new Size(150, 40);
             btnStdRandom.TabIndex = 3;
@@ -59,7 +57,7 @@
             // 
             // btnSha512Random
             // 
-            btnSha512Random.Location = new Point(168, 410);
+            btnSha512Random.Location = new Point(168, 458);
             btnSha512Random.Name = "btnSha512Random";
             btnSha512Random.Size = new Size(150, 40);
             btnSha512Random.TabIndex = 4;
@@ -67,24 +65,70 @@
             btnSha512Random.UseVisualStyleBackColor = true;
             btnSha512Random.Click += btnSha512Random_Click;
             // 
+            // Reset
+            // 
+            Reset.Location = new Point(324, 458);
+            Reset.Name = "Reset";
+            Reset.Size = new Size(150, 40);
+            Reset.TabIndex = 5;
+            Reset.Text = "Reset file sizes";
+            Reset.UseVisualStyleBackColor = true;
+            Reset.Click += btnRest_Click;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(12, 11);
+            label1.Name = "label1";
+            label1.Size = new Size(40, 15);
+            label1.TabIndex = 6;
+            label1.Text = "Inputs";
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(12, 174);
+            label2.Name = "label2";
+            label2.Size = new Size(50, 15);
+            label2.TabIndex = 7;
+            label2.Text = "Outputs";
+            // 
+            // picLogo
+            // 
+            picLogo.Image = (Image)resources.GetObject("picLogo.Image");
+            picLogo.Location = new Point(578, 11);
+            picLogo.Name = "picLogo";
+            picLogo.Size = new Size(71, 71);
+            picLogo.SizeMode = PictureBoxSizeMode.Zoom;
+            picLogo.TabIndex = 8;
+            picLogo.TabStop = false;
+            // 
             // Form1
             // 
-            ClientSize = new Size(584, 461);
+            ClientSize = new Size(661, 510);
+            Controls.Add(picLogo);
+            Controls.Add(label2);
+            Controls.Add(label1);
+            Controls.Add(Reset);
             Controls.Add(btnSha512Random);
             Controls.Add(btnStdRandom);
             Controls.Add(txtOutput);
-            Controls.Add(txtSha512);
             Controls.Add(txtInput);
             Name = "Form1";
             Text = "OpenRndTool";
+            Load += Form1_Load_1;
+            ((System.ComponentModel.ISupportInitialize)picLogo).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
 
         private System.Windows.Forms.TextBox txtInput;
-        private System.Windows.Forms.TextBox txtSha512;
         private System.Windows.Forms.TextBox txtOutput;
         private System.Windows.Forms.Button btnStdRandom;
         private System.Windows.Forms.Button btnSha512Random;
+        private Button Reset;
+        private Label label1;
+        private Label label2;
+        private PictureBox picLogo;
     }
 }
